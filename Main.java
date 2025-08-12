@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
@@ -134,7 +135,7 @@ public class Main {
                     break;
 
                     default:
-                        System.out.println("Opción inválida");
+                        System.out.println("Opción inválida.");
             }
         }
     }
@@ -151,9 +152,77 @@ public class Main {
             int opcion = Integer.parseInt(sc.nextLine());
 
             switch (opcion) {
+                case 1:
+                    //Titulo
+                    System.out.println("Título: ");
+                    String titulo = sc.nextLine();
+                    //Plataforma
+                    System.out.println("Plataforma (Xbox/Playstation/Switch): ");
+                    String plataformaTexto = sc.nextLine().trim();
+                    Plataforma plataforma = Plataforma.valueOf(plataformaTexto.toUpperCase());
+                    //Año de publicación
+                    System.out.println("Año de publicación del título: ");
+                    int anioPublicacion = Integer.parseInt(sc.nextLine());
+                    //Estado
+                    System.out.println("Estado (Nuevo/Usado): ");
+                    String estadoTexto = sc.nextLine().trim();
+                    Estado estado = Estado.valueOf(estadoTexto.toUpperCase());
+                    //Precio de compra
+                    System.out.println("Precio de compra: ");
+                    double precioCompra = Double.parseDouble(sc.nextLine());
+                    //Stock
+                    System.out.println("Stock (unidades): ");
+                    int stock = Integer.parseInt(sc.nextLine());
+                    //Agregar cartucho
+                    Cartucho nuevo = new Cartucho(titulo, plataforma, anioPublicacion, estado, precioCompra, stock);
+                    boolean ok = g.altaCartucho(nuevo);
+                    if (ok) {
+                        System.out.println("Cartucho dado de alta correctamente");
+                    } else {
+                        System.out.println("Ya existe un cartucho con ese título en esa plataforma");
+                    }
+                    break;
+                case 2:
+                    //Pedir lista
+                    ArrayList<Cartucho> lista = g.listarCartuchos();
+                    //Comprobar si está vacía
+                    if (lista.isEmpty()) {
+                        System.out.println("No hay cartuchos en el catálogo.");
+                    } else {
+                        System.out.println("Catálogo de cartuchos: ");
+                        //Recoger e imprimir los cartuchos
+                        for (Cartucho c : lista) {
+                            System.out.println("- " + c.getTitulo() + " [" + c.getPlataforma() + "] " + c.getAnioPublicacion() + " • " + c.getEstado() + " • " + c.getPrecioCompra() + "€ • Stock: " + c.getStock());
+                        }
+                    }
+                    break;
+                case 3:
+                    //Pedir plataforma
+                    System.out.println("Plataforma (Xbox/PlayStation/Switch): ");
+                    String plataformaUsuario = sc.nextLine().trim();
+                    Plataforma p;
+                    try {
+                        p = Plataforma.valueOf(plataformaUsuario.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Plataforma no válida. Usa Xbox, PlayStation o Switch.");
+                        break;
+                    }
+                    ArrayList<Cartucho> cartuchosFiltrados = g.buscarPorPlataforma(p);
+                    if (cartuchosFiltrados.isEmpty()) {
+                        System.out.println("No hay juegos para esa plataforma.");
+                    } else {
+                        System.out.println("Resultados para " + p + ":");
+                        for (Cartucho c : cartuchosFiltrados) {
+                            System.out.println("- " + c.getTitulo() + " [" + c.getPlataforma() + "] " + c.getAnioPublicacion() + " • " + c.getEstado() + " • " + c.getPrecioCompra() + "€ • Stock: " + c.getStock());
+                        }
+                    }
+                    break;
+                case 4:
+                    volver = true;
+                    break;
 
-                default:
-                    System.out.println("Opción inválida");
+                    default:
+                        System.out.println("Opción inválida.");
             }
         }
     }

@@ -1,7 +1,7 @@
 public class Cartucho {
     private String titulo;
     private Plataforma plataforma;
-    private int anoPublicacion;
+    private int anioPublicacion;
     private Estado estado;
     private double precioCompra;
     private int stock;
@@ -9,13 +9,13 @@ public class Cartucho {
     //Constructor
     public Cartucho(String titulo,
                     Plataforma plataforma,
-                    int anoPublicacion,
+                    int anioPublicacion,
                     Estado estado,
                     double precioCompra,
                     int stock) {
         this.titulo = titulo;
         this.plataforma = plataforma;
-        this.anoPublicacion = anoPublicacion;
+        this.anioPublicacion = anioPublicacion;
         this.estado = estado;
         this.precioCompra = precioCompra;
         this.stock = stock;
@@ -36,11 +36,11 @@ public class Cartucho {
         this.plataforma = plataforma;
     }
 
-    public int getAnoPublicacion() {
-        return anoPublicacion;
+    public int getAnioPublicacion() {
+        return anioPublicacion;
     }
-    public void setAnoPublicacion(int anoPublicacion) {
-        this.anoPublicacion = anoPublicacion;
+    public void setAnioPublicacion(int anioPublicacion) {
+        this.anioPublicacion = anioPublicacion;
     }
 
     public Estado getEstado() {
