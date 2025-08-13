@@ -7,6 +7,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         GestorClientes gestorClientes = new GestorClientes();
         GestorCartuchos gestorCartuchos = new GestorCartuchos();
+        GestorVentas gestorVentas = new GestorVentas();
 
         boolean salir = false;
         while (!salir) {
@@ -27,6 +28,62 @@ public class Main {
                     break;
                 case 2:
                     menuCartuchos(sc, gestorCartuchos);
+
+                case 3:
+                    //1. Pedir DNI
+                    System.out.println("DNI del cliente: ");
+                    String dniVenta = sc.nextLine();
+                    //2. Comprobar el cliente
+                    Cliente cliente = gestorClientes.buscarCliente(dniVenta);
+                    if (cliente == null) {
+                        System.out.println("No existe ningún cliente con ese DNI.");
+                        break;
+                    }
+                    //3. Iniciar la venta
+                    Venta venta = gestorVentas.crearVenta(cliente);
+                    System.out.println("Cliente encontrado: "  + cliente.getNombre() + ". Venta iniciada.");
+                    boolean seguir = true;
+                            while (seguir) {
+                                System.out.println("Título del cartucho: ");
+                                String titulo = sc.nextLine();
+
+                                System.out.print("Plataforma (Xbox/PlayStation/Switch): ");
+                                String plataformaTexto = sc.nextLine().trim();
+                                Plataforma plataforma;
+                                try {
+                                    plataforma = Plataforma.valueOf(plataformaTexto.toUpperCase());
+                                } catch (IllegalArgumentException e) {
+                                    System.out.println("Plataforma no válida.");
+                                    continue;
+                                }
+
+                                Cartucho c = gestorCartuchos.buscarCartucho(titulo, plataforma);
+                                if (c == null) {
+                                    System.out.println("No existe ese cartucho en esa plataforma.");
+                                    continue;
+                                }
+
+                                System.out.println("Unidades: ");
+                                int unidades = Integer.parseInt(sc.nextLine());
+
+                                boolean ok = venta.addLinea(c, unidades);
+                                if (ok) {
+                                    System.out.println("Línea añadida. Total parcial: " + venta.calcularTotal() + "€");
+                                } else {
+                                    System.out.println("Stock insuficiente o unidades no válidas");
+                                    continue;
+                                }
+
+                                System.out.println("¿Añadir otra línea? (sí/no): ");
+                                String respuesta = sc.nextLine().trim();
+                                if (respuesta.equalsIgnoreCase("no")) {
+                                    seguir = false;
+                                }
+                            }
+
+                    System.out.println("Total de la venta: " + venta.calcularTotal() + "€");
+                            break;
+
                     default:
                         System.out.println("Opción inválida");
             }

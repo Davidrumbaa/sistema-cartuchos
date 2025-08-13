@@ -37,5 +37,15 @@ public class GestorCartuchos {
         return resultado;
     }
 
+    public Cartucho buscarCartucho(String titulo, Plataforma plataforma) {
+        for (Cartucho c: cartuchos) {
+            if (c.getTitulo().equalsIgnoreCase(titulo)
+            && c.getPlataforma() == plataforma); {
+                return c;
+            }
+        }
+        return null;
+    }
+
 }
 
