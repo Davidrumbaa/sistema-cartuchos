@@ -28,6 +28,7 @@ public class Main {
                     break;
                 case 2:
                     menuCartuchos(sc, gestorCartuchos);
+                    break;
 
                 case 3:
                     //1. Pedir DNI
@@ -44,23 +45,51 @@ public class Main {
                     System.out.println("Cliente encontrado: "  + cliente.getNombre() + ". Venta iniciada.");
                     boolean seguir = true;
                             while (seguir) {
-                                System.out.println("Título del cartucho: ");
-                                String titulo = sc.nextLine();
-
-                                System.out.print("Plataforma (Xbox/PlayStation/Switch): ");
-                                String plataformaTexto = sc.nextLine().trim();
-                                Plataforma plataforma;
-                                try {
-                                    plataforma = Plataforma.valueOf(plataformaTexto.toUpperCase());
-                                } catch (IllegalArgumentException e) {
-                                    System.out.println("Plataforma no válida.");
+                                //1. Pedir título
+                                System.out.println("Título del cartucho (o 'VOLVER' para cancelar): ");
+                                String titulo = sc.nextLine().trim();
+                                if (titulo.equalsIgnoreCase("VOLVER")) {
+                                    seguir = false;
                                     continue;
                                 }
+                                //2. Buscar coincidencias por título
+                               ArrayList<Cartucho> coincidencias = gestorCartuchos.buscarPorTitulo(titulo);
+                                Cartucho c = null;
 
-                                Cartucho c = gestorCartuchos.buscarCartucho(titulo, plataforma);
-                                if (c == null) {
-                                    System.out.println("No existe ese cartucho en esa plataforma.");
+                                if (coincidencias.isEmpty()) {
+                                    System.out.println("No existe ese título en el catálogo.");
                                     continue;
+                                } else if (coincidencias.size() == 1) {
+                                    // 2.1 No preguntamos si solo hay una plataforma disponible
+                                    c = coincidencias.get(0);
+                                    System.out.println("Usando plataforma detectada: " + c.getPlataforma());
+                                } else {
+                                    //2.2 Pedir qué plataforma seleccionar en caso de haber varias disponibles
+                                    ArrayList<Plataforma> disponibles = new ArrayList<>();
+                                    for (Cartucho k : coincidencias) {
+                                        if (!disponibles.contains(k.getPlataforma())) {
+                                            disponibles.add(k.getPlataforma());
+                                        }
+                                    }
+                                    //2.3 Construir plataformas
+                                    String opciones = "";
+                                    for (int i = 0;  i < disponibles.size(); i++) {
+                                        if (i > 0) opciones += "/";
+                                        opciones += disponibles.get(i).name();
+                                    }
+                                    System.out.println("Plataforma (" + opciones + "): ");
+                                    String plataformaTexto = sc.nextLine().trim();
+                                    try {
+                                        Plataforma plataformaElegida = Plataforma.valueOf(plataformaTexto.toUpperCase());
+                                        c = gestorCartuchos.buscarCartucho(titulo, plataformaElegida);
+                                        if (c == null) {
+                                            System.out.println("Para ese título no existe esa plataforma.");
+                                            continue;
+                                        }
+                                    } catch (IllegalArgumentException e) {
+                                        System.out.println("Plataforma no válida.");
+                                        continue;
+                                    }
                                 }
 
                                 System.out.println("Unidades: ");
@@ -80,9 +109,33 @@ public class Main {
                                     seguir = false;
                                 }
                             }
+                    if (venta.getNumLineas() == 0) {
+                        gestorVentas.cancelarSiVacia(venta);
+                        System.out.println("Venta cancelada (no se añadió ninguna línea).");
+                    } else {
+                        System.out.println("Total de la venta: " + venta.calcularTotal() + "€");
+                    }
+                    break;
 
-                    System.out.println("Total de la venta: " + venta.calcularTotal() + "€");
-                            break;
+                case 4:
+                    //1. Pedir lista
+                    ArrayList<Venta> ventas = gestorVentas.listarVentas();
+                    //2. Comprobar si hay ventas
+                    if (ventas.isEmpty()) {
+                        System.out.println("No hay ventas registradas.");
+                    } else {
+                        System.out.println("=== Ventas realizadas ===");
+                    }
+                    //3. Recorrer e imprimir
+                    for (Venta v : ventas) {
+                        Cliente cli = v.getCliente();
+                        System.out.println("- " + cli.getNombre() + " (" + cli.getDni() + ")" + " . líneas: " + v.getNumLineas() + " . total:" + v.calcularTotal() + "€");
+                    }
+                    break;
+
+                case 5:
+                    salir = true;
+                    break;
 
                     default:
                         System.out.println("Opción inválida");

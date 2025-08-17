@@ -15,6 +15,16 @@ public class GestorVentas {
         //Devolverla
         return v;
     }
+
+    public ArrayList<Venta> listarVentas() {
+        return new ArrayList<>(ventas);
+    }
+
+    public void cancelarSiVacia(Venta v) {
+        if (v.getNumLineas() == 0) {
+            ventas.remove(v);
+        }
+    }
 }
 
 

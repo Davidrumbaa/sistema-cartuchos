@@ -27,5 +27,13 @@ public class Venta {
         }
         return total;
     }
+
+    public Cliente getCliente(){
+        return cliente;
+    }
+
+    public int getNumLineas() {
+        return lineas.size();
+    }
 }
 

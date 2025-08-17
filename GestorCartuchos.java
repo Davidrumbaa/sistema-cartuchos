@@ -39,12 +39,23 @@ public class GestorCartuchos {
 
     public Cartucho buscarCartucho(String titulo, Plataforma plataforma) {
         for (Cartucho c: cartuchos) {
-            if (c.getTitulo().equalsIgnoreCase(titulo)
-            && c.getPlataforma() == plataforma); {
+            boolean tituloOK = c.getTitulo().trim().equalsIgnoreCase(titulo.trim());
+            boolean plataformaOK = (c.getPlataforma() == plataforma);
+            if (tituloOK && plataformaOK) {
                 return c;
             }
         }
         return null;
+    }
+
+    public ArrayList<Cartucho> buscarPorTitulo (String titulo) {
+        ArrayList<Cartucho> resultado = new ArrayList<>();
+        for (Cartucho c : cartuchos) {
+            if (c.getTitulo().trim().equalsIgnoreCase(titulo.trim())) {
+                resultado.add(c);
+            }
+        }
+        return resultado;
     }
 
 }
