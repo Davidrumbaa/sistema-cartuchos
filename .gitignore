@@ -1,0 +1,19 @@
+# Archivos compilados
+*.class
+target/
+out/
+
+# IDE
+.idea/
+*.iml
+*.iws
+
+# Maven
+dependency-reduced-pom.xml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
