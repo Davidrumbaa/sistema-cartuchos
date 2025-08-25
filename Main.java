@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -131,6 +132,25 @@ public class Main {
                         Cliente cli = v.getCliente();
                         System.out.println("- " + cli.getNombre() + " (" + cli.getDni() + ")" + " . líneas: " + v.getNumLineas() + " . total:" + v.calcularTotal() + "€");
                     }
+                    // --- Prueba rápida por DNI (temporal) ---
+                    System.out.print("Ver ventas por cliente (DNI o Enter para saltar): ");
+                    String dniTest = sc.nextLine().trim();
+                    if (!dniTest.isEmpty()) {
+                        ArrayList<Venta> ventasCli = gestorVentas.ventasPorCliente(dniTest);
+                        if (ventasCli.isEmpty()) {
+                            System.out.println("Ese cliente no tiene ventas.");
+                        } else {
+                            System.out.println("Ventas de " + dniTest + ":");
+                            int i = 1;
+                            for (Venta v : ventasCli) {
+                                System.out.println("  #" + (i++) + " · líneas: " + v.getNumLineas()
+                                        + " · total: " + v.calcularTotal() + "€");
+                            }
+                            double totalCli = gestorVentas.totalPorCliente(dniTest);
+                            System.out.println("Total acumulado del cliente: " + totalCli + "€");
+                        }
+                    }
+                    // --- fin prueba rápida ---
                     break;
 
                 case 5:
@@ -235,8 +255,21 @@ public class Main {
                         System.out.println("No hay clientes en el sistema.");
                     } else {
                         System.out.println("Clientes registrados:");
-                        for (Cliente cli : lista){
-                            System.out.println("  - " + cli.getNombre()+" (" + cli.getDni() + ")");
+                        System.out.println("¿Ordenar por? 1) Nombre 2) DNI 3) Sin ordenar");
+                        int criterio = Integer.parseInt(sc.nextLine());
+                        switch (criterio) {
+                            case 1: // Nombre A->Z (ignora mayúsculas)
+                                lista.sort(Comparator.comparing(Cliente::getNombre, String.CASE_INSENSITIVE_ORDER).thenComparing(Cliente::getDni, String.CASE_INSENSITIVE_ORDER));
+                                break;
+                            case 2: //DNI A->Z
+                                lista.sort(Comparator.comparing(Cliente::getDni, String.CASE_INSENSITIVE_ORDER));
+                                break;
+
+                            default:
+                                break;
+                        }
+                        for (Cliente cli : lista) {
+                            System.out.println("  - " + cli.getNombre() + " (" + cli.getDni() + ")");
                         }
                     }
                     break;
@@ -300,6 +333,19 @@ public class Main {
                         System.out.println("No hay cartuchos en el catálogo.");
                     } else {
                         System.out.println("Catálogo de cartuchos: ");
+                        System.out.println("¿Ordenar por? 1) Título 2) Plataforma 3) Sin ordenar");
+                        int criterio = Integer.parseInt(sc.nextLine());
+                        switch (criterio) {
+                            case 1: //Título A->Z (ignorando mayúsculas)
+                                lista.sort(Comparator.comparing(Cartucho::getTitulo, String.CASE_INSENSITIVE_ORDER).thenComparing(c -> c.getPlataforma().name()));
+                                break;
+                            case 2: // Plataforma (XBOX/PLAYSTATION/SWITCH) y luego título
+                                lista.sort(Comparator.comparing((Cartucho c) -> c.getPlataforma().name()).thenComparing(Cartucho::getTitulo, String.CASE_INSENSITIVE_ORDER));
+                                break;
+
+                            default:
+                                break;
+                        }
                         //Recoger e imprimir los cartuchos
                         for (Cartucho c : lista) {
                             System.out.println("- " + c.getTitulo() + " [" + c.getPlataforma() + "] " + c.getAnioPublicacion() + " • " + c.getEstado() + " • " + c.getPrecioCompra() + "€ • Stock: " + c.getStock());
@@ -336,4 +382,70 @@ public class Main {
             }
         }
     }
+
+    private static void menuVentas(Scanner sc, GestorVentas gv) {
+        boolean volver = false;
+        while (!volver) {
+            System.out.println("=== GESTIÓN DE VENTAS ===");
+            System.out.println("1. Listar todas");
+            System.out.println("2. Ventas por cliente");
+            System.out.println("3. Volver");
+            System.out.print("Elige opción: ");
+            int op = Integer.parseInt(sc.nextLine());
+
+            switch (op) {
+                case 1: {
+                    ArrayList<Venta> ventas = gv.listarVentas();
+                    if (ventas.isEmpty()) {
+                        System.out.println("No hay ventas registradas.");
+                    } else {
+                        System.out.println("=== Ventas realizadas ===");
+                        for (Venta v : ventas) {
+                            Cliente cli = v.getCliente();
+                            System.out.println("- " + cli.getNombre() + " (" + cli.getDni() + ")"
+                                    + " · líneas: " + v.getNumLineas()
+                                    + " · total: " + v.calcularTotal() + "€");
+                            for (LineaVenta lv : v.getLineas()) {
+                                Cartucho c = lv.getCartucho();
+                                System.out.println("    · " + c.getTitulo() + " [" + c.getPlataforma() + "]"
+                                        + " ×" + lv.getUnidades()
+                                        + " = " + lv.subtotal() + "€");
+                            }
+                        }
+                    }
+                    break;
+                }
+                case 2: {
+                    System.out.print("DNI del cliente: ");
+                    String dni = sc.nextLine().trim();
+                    ArrayList<Venta> ventasCli = gv.ventasPorCliente(dni);
+                    if (ventasCli.isEmpty()) {
+                        System.out.println("Ese cliente no tiene ventas.");
+                    } else {
+                        System.out.println("=== Ventas de " + dni + " ===");
+                        int i = 1;
+                        for (Venta v : ventasCli) {
+                            System.out.println("  #" + (i++) + " · líneas: " + v.getNumLineas()
+                                    + " · total: " + v.calcularTotal() + "€");
+                            for (LineaVenta lv : v.getLineas()) {
+                                Cartucho c = lv.getCartucho();
+                                System.out.println("    · " + c.getTitulo() + " [" + c.getPlataforma() + "]"
+                                        + " ×" + lv.getUnidades()
+                                        + " = " + lv.subtotal() + "€");
+                            }
+                        }
+                        double totalCli = gv.totalPorCliente(dni);
+                        System.out.println("Total acumulado del cliente: " + totalCli + "€");
+                    }
+                    break;
+                }
+                case 3:
+                    volver = true;
+                    break;
+                default:
+                    System.out.println("Opción inválida");
+            }
+        }
+    }
+
 }

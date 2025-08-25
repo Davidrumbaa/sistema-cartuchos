@@ -35,5 +35,10 @@ public class Venta {
     public int getNumLineas() {
         return lineas.size();
     }
+
+    public ArrayList<LineaVenta> getLineas() {
+        return new ArrayList<>(lineas);
+
+    }
 }
 
