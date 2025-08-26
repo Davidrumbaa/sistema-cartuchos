@@ -1,5 +1,14 @@
 import java.util.ArrayList;
 
+/**
+ * Gestor principal para operaciones CRUD de clientes.
+ * Mantiene una lista de clientes únicos identificados por DNI.
+ * Proporciona funcionalidades de alta, baja, modificación y búsqueda.
+ *
+ * @author Davidrumbaa
+ * @version 1.0
+ */
+
 public class GestorClientes {
     private ArrayList<Cliente> clientes;
 

@@ -1,3 +1,12 @@
+/**
+ * Representa un cartucho de videojuego en el inventario.
+ * Contiene información de título, plataforma, estado, precio y stock.
+ * Los cartuchos se identifican únicamente por título y plataforma.
+ *
+ * @author Davidrumbaa
+ * @version 1.0
+ */
+
 public class Cartucho {
     private String titulo;
     private Plataforma plataforma;
