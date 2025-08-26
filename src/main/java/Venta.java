@@ -1,5 +1,16 @@
 import java.util.ArrayList;
 
+/**
+ * Representa una transacción de venta completa con múltiples líneas de productos.
+ *
+ * Una venta está asociada a un cliente específico y puede contener múltiples
+ * líneas de productos. Gestiona automáticamente el cálculo de totales y la
+ * actualización del stock de los cartuchos vendidos.
+ *
+ * @author Davidrumbaa
+ * @version 1.0
+ */
+
 public class Venta {
     private Cliente cliente;
     private ArrayList<LineaVenta> lineas;
@@ -8,6 +19,15 @@ public class Venta {
         this.cliente = cliente;
         lineas = new ArrayList<>();
     }
+
+    /**
+     * Añade una línea de venta con el cartucho y cantidad especificados.
+     * Actualiza automáticamente el stock del cartucho si hay suficientes unidades.
+     *
+     * @param c el cartucho a vender
+     * @param unidades la cantidad a vender
+     * @return true si se añadió la línea correctamente, false si no hay stock suficiente
+     */
 
     public boolean addLinea(Cartucho c, int unidades) {
         if (unidades <= 0)

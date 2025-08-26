@@ -1,7 +1,24 @@
+/**
+ * Representa una línea individual dentro de una venta.
+ *
+ * Cada línea contiene información sobre un cartucho específico,
+ * la cantidad vendida y el precio unitario aplicado en el momento
+ * de la venta.
+ *
+ * @author Davidrumbaa
+ * @version 1.0
+ */
+
 public class LineaVenta {
     private Cartucho cartucho;
     private int unidades;
     private double precioUnitario;
+
+    /**
+     * Calcula el subtotal de esta línea de venta.
+     *
+     * @return el resultado de multiplicar unidades por precio unitario
+     */
 
     public LineaVenta(Cartucho cartucho,
                            int unidades,

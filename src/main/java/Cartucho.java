@@ -15,6 +15,17 @@ public class Cartucho {
     private double precioCompra;
     private int stock;
 
+    /**
+     * Crea un nuevo cartucho con los datos proporcionados.
+     *
+     * @param titulo          título del cartucho
+     * @param plataforma      consola o sistema al que pertenece
+     * @param anioPublicacion año en que se lanzó
+     * @param estado          estado físico (p. ej., NUEVO, USADO)
+     * @param precioCompra    precio de compra del cartucho
+     * @param stock           unidades disponibles en inventario
+     */
+
     //Constructor
     public Cartucho(String titulo,
                     Plataforma plataforma,
