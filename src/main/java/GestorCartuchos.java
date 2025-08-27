@@ -1,5 +1,14 @@
 import java.util.ArrayList;
 
+/**
+ * Gestor principal para la administración del catálogo de cartuchos.
+ * Proporciona operaciones de alta, búsqueda y listado de cartuchos
+ * con validación de duplicados por título y plataforma.
+ *
+ * @author Davidrumbaa
+ * @version 1.0
+ */
+
 public class GestorCartuchos {
     private ArrayList<Cartucho> cartuchos;
 
