@@ -18,6 +18,14 @@ public class GestorCartuchos {
 
     }
 
+    /**
+     * Registra un nuevo cartucho en el catálogo si no existe duplicado.
+     * Un cartucho se considera duplicado si tiene mismo título y plataforma.
+     *
+     * @param cartucho el cartucho a añadir al catálogo
+     * @return true si se añadió correctamente, false si ya existía
+     */
+
     //1. Alta de cartucho
     public boolean altaCartucho (Cartucho cartucho) {
         for (Cartucho c : cartuchos) {

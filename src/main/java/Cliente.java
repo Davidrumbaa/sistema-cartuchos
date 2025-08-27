@@ -34,6 +34,11 @@ public class Cliente {
     }
 
     //Getters y Setters
+
+    /**
+     * Obtiene el nombre del cliente.
+     * @return el nombre completo
+     */
     public String getNombre() {
         return nombre;
     }
@@ -41,6 +46,10 @@ public class Cliente {
         this.nombre = nombre;
     }
 
+    /**
+     * Obtiene el DNI del cliente.
+     * @return el DNI completo
+     */
     public String getDni() {
         return dni;
     }
@@ -48,6 +57,10 @@ public class Cliente {
         this.dni = dni;
     }
 
+    /**
+     * Obtiene el teléfono del cliente.
+     * @return el teléfono completo
+     */
     public String getTelefono() {
         return telefono;
     }
@@ -55,6 +68,10 @@ public class Cliente {
         this.telefono = telefono;
     }
 
+    /**
+     * Obtiene el email del cliente.
+     * @return el email completo
+     */
     public String getEmail(){
         return email;
     }

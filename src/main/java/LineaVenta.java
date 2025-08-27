@@ -15,9 +15,11 @@ public class LineaVenta {
     private double precioUnitario;
 
     /**
-     * Calcula el subtotal de esta línea de venta.
+     * Constructor para crear una línea de venta con cartucho, unidades y precio.
      *
-     * @return el resultado de multiplicar unidades por precio unitario
+     * @param cartucho el cartucho vendido
+     * @param unidades la cantidad vendida
+     * @param precioUnitario el precio por unidad aplicado
      */
 
     public LineaVenta(Cartucho cartucho,
@@ -27,6 +29,12 @@ public class LineaVenta {
         this.unidades = unidades;
         this.precioUnitario = precioUnitario;
     }
+
+    /**
+     * Calcula el subtotal de esta línea de venta.
+     *
+     * @return el resultado de multiplicar unidades por precio unitario
+     */
 
     public double subtotal() {
         return unidades*precioUnitario;

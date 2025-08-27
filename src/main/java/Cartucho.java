@@ -42,9 +42,18 @@ public class Cartucho {
     }
 
     //Getters y Setters
+
+    /**
+     * Obtiene el título del cartucho.
+     * @return el título del videojuego
+     */
     public String getTitulo() {
         return titulo;
     }
+    /**
+     * Establece el título del cartucho.
+     * @param titulo el nuevo título
+     */
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
